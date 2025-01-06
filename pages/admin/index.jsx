@@ -87,7 +87,7 @@ const Login = () => {
         <input
           type="text"
           name="username"
-          className={`py-2 px-3 border rounded-lg outline-none w-full focus:ring focus:ring-blue-300 transition-all ${getInputBorderClass(
+          className={`text-black py-2 px-3 border rounded-lg outline-none w-full focus:ring focus:ring-blue-300 transition-all ${getInputBorderClass(
             formStatus.usernameValid
           )}`}
           placeholder="Username"
@@ -99,7 +99,7 @@ const Login = () => {
         <input
           type="password"
           name="password"
-          className={`py-2 px-3 border rounded-lg outline-none w-full focus:ring focus:ring-blue-300 transition-all ${getInputBorderClass(
+          className={`text-black py-2 px-3 border rounded-lg outline-none w-full focus:ring focus:ring-blue-300 transition-all ${getInputBorderClass(
             formStatus.passwordValid
           )}`}
           placeholder="Password"

@@ -28,12 +28,12 @@ function Navbar() {
   return (
     <nav className="flex items-center justify-center w-full">
       <div
-        className={`flex items-center justify-between font-bold w-11/12 bg-gradient-to-br fixed from-gray-300/40 to-gray-800/60 bg-[length:200%_200%] animate-gradient backdrop-blur-md py-3 px-2 rounded-b-lg transition-all duration-200 
+        className={`flex items-center justify-between font-bold w-11/12 bg-gradient-to-br fixed from-gray-300/40 to-gray-800/60 bg-[length:200%_200%] animate-gradient backdrop-blur-md py-3 px-2 rounded-b-lg transition-all  duration-700
                   ${
                     endOfPage
-                      ? ` translate-y-[calc(100vh-25px)] rounded-b-none rounded-t-xl transition`
+                      ? ` translate-y-[calc(100vh-26px)] w-full rounded-b-none rounded-t-xl`
                       : isScrolled
-                      ? "translate-y-8 rounded-xl"
+                      ? "translate-y-10 rounded-xl"
                       : "translate-y-6 w-full"
                   }                                          
                   `}
