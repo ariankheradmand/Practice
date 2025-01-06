@@ -113,7 +113,7 @@ const Login = () => {
             ({ label, isValid }, index) => (
               <div key={index} className="flex items-center gap-2 pt-2">
                 <Image
-                  src={isValid ? "/check.svg" : "/false.svg"}
+                  src={isValid ? "/Check.svg" : "/False.svg"}
                   alt={isValid ? "Valid" : "Invalid"}
                   width={20}
                   height={20}
