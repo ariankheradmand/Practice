@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite" // Change this to your database provider
+  url      = env("DATABASE_URL")
+}
+
+model MenuItem {
+  id           String   @id @default(cuid())
+  name         String
+  description  String?
+  price        Float
+  imgPath      String
+  tags         Tag[]    @relation("MenuItemTags")
+  isTodaysBest Boolean   @default(false)
+  isWeeklyBest Boolean   @default(false)
+  category     Category? @relation(fields: [categoryId], references: [id])
+  categoryId   String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  isEnabled    Boolean   @default(true) // New field to enable/disable menu items
+}
+
+model Tag {
+  id         String      @id @default(cuid())
+  name       String      @unique
+  menuItems  MenuItem[]  @relation("MenuItemTags")
+  createdAt  DateTime    @default(now())
+}
+
+model Category {
+  id         String      @id @default(cuid())
+  name       String      @unique
+  menuItems  MenuItem[]
+  createdAt  DateTime    @default(now())
+}
