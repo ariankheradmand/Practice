@@ -1,8 +1,8 @@
 import "../../../app/globals.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import AddTag from "../components/AddTag";
-import AddCategory from "../components/AddCategory";
+import AddTag from "../../../components/AddTag";
+import AddCategory from "../../../components/AddCategory";
 
 const AdminPage = () => {
   const [menuItems, setMenuItems] = useState([]);
