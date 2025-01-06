@@ -7,7 +7,12 @@ function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+
+      // Detect end of the page
+      const scrollPosition = window.innerHeight + window.scrollY;
+      const threshold = document.documentElement.scrollHeight || document.body.offsetHeight;
+      
+      if (scrollPosition >= threshold - 1) {
         setEndOfPage(true);
       } else {
         setEndOfPage(false);
