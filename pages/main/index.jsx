@@ -1,20 +1,99 @@
-import React from "react";
+import "../../app/globals.css";
+
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import Random from "../../components/Random";
-import "../../app/globals.css";
-function index() {
+import { useInView } from "react-intersection-observer";
+
+function HomePage() {
+  const [placement, setPlacement] = useState(-1115);
+  const [rightLeft, setRightLeft] = useState("-");
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [value, setValue] = useState("");
+  const [isSmooth, setIsSmooth] = useState(false);
+
+  const MouseContent = () => {
+    return (
+      <div
+        className="absolute transition-all"
+        style={{
+          transform: `translateY(${placement}px) translateX(${rightLeft}140px)`,
+        }}
+      >
+        <div className="animate__animated animate__pulse border py-2 px-2 rounded-xl">
+          {value}
+        </div>
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+      if (isScrolled) {
+        setPlacement(-1115);
+        setRightLeft("-");
+      }
+    };
+
+
+    window.addEventListener("scroll", handleScroll);
+    if (isScrolled >= (isScrolled + 511)) {
+       setIsSmooth(true);
+    }
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+    
+  }, [isSmooth]);
+
+  const RandomWrapper = ({ value, initialPlacement, initialRightLeft }) => {
+    const { ref, inView } = useInView({
+      threshold: 0.5,
+      triggerOnce: false,
+      onChange: (inView) => {
+        if (inView) {
+          setPlacement(initialPlacement);
+          setRightLeft(initialRightLeft);
+          setValue(value); // Correctly set the value here
+        }
+      },
+    });
+
+    return <Random ref={ref} />;
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center bg-slate-300">
+    <div className="flex flex-col relative items-center justify-center bg-slate-300">
       <Navbar />
-      <Random />
-      <Random />
-      <Random />
-      <Random />
-      <Random />
-      <Random />
-      <Random />
+      <MouseContent />
+      <RandomWrapper
+        value="first"
+        initialPlacement={-1115}
+        initialRightLeft="-"
+      />
+      <RandomWrapper
+        value="second"
+        initialPlacement={-604}
+        initialRightLeft=""
+      />
+      <RandomWrapper
+        value="third"
+        initialPlacement={-91}
+        initialRightLeft="-"
+      />
+      <RandomWrapper
+        value="forth"
+        initialPlacement={420}
+        initialRightLeft=""
+      />
+      <RandomWrapper
+        value="fifth"
+        initialPlacement={931}
+        initialRightLeft="-"
+      />
     </div>
   );
 }
 
-export default index;
+export default HomePage;

@@ -28,7 +28,8 @@ function Navbar() {
   return (
     <nav className="flex items-center justify-center w-full">
       <div
-        className={`flex items-center justify-between font-bold w-11/12 bg-gradient-to-br fixed from-gray-300/40 to-gray-800/60 bg-[length:200%_200%] animate-gradient backdrop-blur-md py-3 px-2 rounded-b-lg transition-all  duration-700
+        className={`flex items-center justify-between z-50 font-bold w-11/12 bg-gradient-to-br fixed from-gray-300/40 to-gray-800/60 bg-[length:200%_200%] animate-gradient backdrop-blur-md py-3 px-2 rounded-b-lg transition-all  duration-700
+                   xl:w-7/12 xl:text-2xl md:w-8/12 
                   ${
                     endOfPage
                       ? ` translate-y-[calc(100vh-26px)] w-full rounded-b-none rounded-t-xl`
@@ -45,8 +46,8 @@ function Navbar() {
 
         <div className="flex gap-2">
           {/* Login Button */}
-          <div className="relative p-1 rounded-lg bg-gradient-to-r from-purple-500 via-orange-400 to-purple-500 bg-[length:200%_200%] animate-gradient">
-            <div className="bg-white/80 py-px px-2 rounded relative z-10">
+          <div className="relative cursor-pointer p-[3px] rounded-lg bg-gradient-to-r from-purple-500 via-orange-400 to-purple-500 bg-[length:200%_200%] animate-gradient">
+            <div className="bg-white/80 py-px px-2 rounded-lg relative z-10">
               <div className="bg-gradient-to-b from-purple-600 to-blue-600 bg-clip-text text-transparent">
                 Login
               </div>
@@ -54,8 +55,8 @@ function Navbar() {
           </div>
 
           {/* SignUp Button */}
-          <div className="relative p-1 rounded-lg bg-gradient-to-r from-purple-500 via-orange-400 to-purple-500 bg-[length:200%_200%] animate-gradient">
-            <div className="bg-white/80 py-px px-2 rounded relative z-10">
+          <div className="relative p-[3px] cursor-pointer rounded-lg bg-gradient-to-r from-purple-500 via-orange-400 to-purple-500 bg-[length:200%_200%] animate-gradient">
+            <div className="bg-white/80 py-px px-2 rounded-lg relative z-10">
               <div className="bg-gradient-to-b from-purple-600 to-blue-600 bg-clip-text text-transparent">
                 SignUp
               </div>
