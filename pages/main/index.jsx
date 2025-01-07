@@ -15,12 +15,12 @@ function HomePage() {
   const MouseContent = () => {
     return (
       <div
-        className="absolute transition-all"
+        className="absolute transition-all "
         style={{
           transform: `translateY(${placement}px) translateX(${rightLeft}140px)`,
         }}
       >
-        <div className="animate__animated animate__pulse border py-2 px-2 rounded-xl">
+        <div className="animate__animated animate__pulse border py-2 px-2 rounded-xl bg-gradient-to-br from-gray-600/40 via-gray-200/40 to-gray-800/60 bg-[length:200%_200%] animate-gradient backdrop-blur-md">
           {value}
         </div>
       </div>
