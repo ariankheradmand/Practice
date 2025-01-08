@@ -46,22 +46,10 @@ function Navbar() {
 
         <div className="flex gap-2">
           {/* Login Button */}
-          <div className="relative cursor-pointer p-[3px] rounded-lg ">
-            <div className="bg-white/80 py-px px-2 rounded-lg relative z-10">
-              <div className="">
-                Login
-              </div>
-            </div>
-          </div>
+          
 
           {/* SignUp Button */}
-          <div className="relative p-[3px] cursor-pointer rounded-lg ">
-            <div className="bg-white/80 py-px px-2 rounded-lg relative z-10">
-              <div className="">
-                SignUp
-              </div>
-            </div>
-          </div>
+          
           <Menu endOfPage={endOfPage} />
         </div>
       </div>

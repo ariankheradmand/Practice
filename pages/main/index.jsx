@@ -65,7 +65,7 @@ function HomePage() {
 
   return (
     <div className="flex flex-col relative items-center justify-center bg-slate-300">
-      <Navbar />
+      <Navbar  />
       <MouseContent />
       <RandomWrapper
         value="first"

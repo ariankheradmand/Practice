@@ -1,30 +1,25 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 let DropDown = ({ endOfPage, status }) => {
   return (
     <div
-      className={`fixed w-6/12 px-4 py-2  font-thin bg-gray-600/80 backdrop-blur-md
+      className={`fixed w-6/12 px-4 py-2 font-thin bg-gray-500/80 
     ${endOfPage ? "mb-1 bottom-14 right-1" : "mt-1 top-14 right-1"}
     ${
-        status
+      status
         ? "animate__animated animate__fadeIn"
         : "animate__animated animate__fadeOut"
     }
-    
-    rounded-xl h-fit z-[100]`}
+    rounded-xl h-fit z-40`}
     >
-        <div className="flex flex-col gap-2">
-      <p className="">
-        AR<span className="text-white">2</span>
-      </p>
-      <div className="w-full border-b-2 border-dashed border-gray-800"></div>
+      <div className="flex flex-col gap-2">
 
-      <div className="text-white ">About Us</div>
-
-      <div className="text-white">Gallery</div>
-
-      <div className="text-white">Visit</div>
+        <div className="text-white font-bold">Login</div>
+        <div className="text-white font-bold">Signup</div>
+        <div className="text-white">About Us</div>
+        <div className="text-white">Gallery</div>
+        <div className="text-white">Visit</div>
       </div>
     </div>
   );
@@ -32,18 +27,40 @@ let DropDown = ({ endOfPage, status }) => {
 
 function Menu({ endOfPage }) {
   const [dropDown, setDropDown] = useState(false);
-  const [status , setStatus] = useState(false);
+  const [status, setStatus] = useState(false);
+  const dropDownRef = useRef(null);
+
+  // Close dropdown if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropDownRef.current && !dropDownRef.current.contains(event.target)) {
+        setStatus(false);
+        setTimeout(() => {
+          setDropDown(false);
+        }, 500);
+      }
+    };
+
+    if (dropDown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropDown]);
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center relative">
       <button
         onClick={() => {
           if (dropDown) {
             setStatus(false);
-            setTimeout(() =>{
-                setDropDown(false);
-            }, 500)
-            
+            setTimeout(() => {
+              setDropDown(false);
+            }, 500);
           } else {
             setStatus(true);
             setDropDown(true);
@@ -51,14 +68,14 @@ function Menu({ endOfPage }) {
         }}
       >
         {status ? (
-            <div>
-          <Image
-            className="animate__animated animate__fadeIn"
-            src="/Close.svg"
-            alt="Menu"
-            width={25}
-            height={15}
-          />
+          <div>
+            <Image
+              className="animate__animated animate__fadeIn "
+              src="/Close.svg"
+              alt="Menu"
+              width={25}
+              height={25}
+            />
           </div>
         ) : (
           <Image
@@ -70,7 +87,11 @@ function Menu({ endOfPage }) {
           />
         )}
       </button>
-      {dropDown ? <DropDown endOfPage={endOfPage} status={status} /> : null}
+      {dropDown ? (
+        <div ref={dropDownRef}>
+          <DropDown endOfPage={endOfPage} status={status} />
+        </div>
+      ) : null}
     </div>
   );
 }
