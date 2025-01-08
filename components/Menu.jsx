@@ -4,7 +4,7 @@ import React, { useState } from "react";
 let DropDown = ({ endOfPage, status }) => {
   return (
     <div
-      className={`fixed w-6/12 px-4 py-2 flex flex-col gap-2 font-thin bg-gray-600/80 backdrop-blur-md
+      className={`fixed w-6/12 px-4 py-2  font-thin bg-gray-600/80 backdrop-blur-md
     ${endOfPage ? "mb-1 bottom-14 right-1" : "mt-1 top-14 right-1"}
     ${
         status
@@ -14,7 +14,7 @@ let DropDown = ({ endOfPage, status }) => {
     
     rounded-xl h-fit z-[100]`}
     >
-        <div className="">
+        <div className="flex flex-col gap-2">
       <p className="">
         AR<span className="text-white">2</span>
       </p>
