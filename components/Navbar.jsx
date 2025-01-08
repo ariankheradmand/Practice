@@ -12,7 +12,7 @@ function Navbar() {
       const scrollPosition = window.innerHeight + window.scrollY;
       const threshold = document.documentElement.scrollHeight || document.body.offsetHeight;
       
-      if (scrollPosition >= threshold - 1) {
+      if (scrollPosition >= threshold - 50) {
         setEndOfPage(true);
       } else {
         setEndOfPage(false);
