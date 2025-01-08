@@ -15,7 +15,7 @@ function HomePage() {
   const MouseContent = () => {
     return (
       <div
-        className="absolute transition-all "
+        className="absolute transition-all invisible"
         style={{
           transform: `translateY(${placement}px) translateX(${rightLeft}140px)`,
         }}
