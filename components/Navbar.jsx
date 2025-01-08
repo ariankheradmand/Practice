@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import Menu from "@/components/Menu";
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [endOfPage, setEndOfPage] = useState(false);
@@ -48,7 +48,7 @@ function Navbar() {
           {/* Login Button */}
           <div className="relative cursor-pointer p-[3px] rounded-lg ">
             <div className="bg-white/80 py-px px-2 rounded-lg relative z-10">
-              <div className="bg-gradient-to-b from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              <div className="">
                 Login
               </div>
             </div>
@@ -57,11 +57,12 @@ function Navbar() {
           {/* SignUp Button */}
           <div className="relative p-[3px] cursor-pointer rounded-lg ">
             <div className="bg-white/80 py-px px-2 rounded-lg relative z-10">
-              <div className="bg-gradient-to-b from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              <div className="">
                 SignUp
               </div>
             </div>
           </div>
+          <Menu endOfPage={endOfPage} />
         </div>
       </div>
     </nav>
