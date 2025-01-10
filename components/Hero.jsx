@@ -5,7 +5,6 @@ import Image from "next/image";
 
 export default function PopularMovies() {
   const [movies, setMovies] = useState([]);
-  const [images, setImages] = useState({}); // Changed to store all images
   const [imageLoading, setImageLoading] = useState(true); // Initially true for all images
   const [next, setNext] = useState(0);
   const [error, setError] = useState(null);
@@ -17,41 +16,22 @@ export default function PopularMovies() {
           language: "en-US",
           page: 1,
         });
-        setMovies(data.results || []);
+
+        // Map over results to include image paths in movie objects
+        const moviesWithImages = data.results.map(movie => ({
+          ...movie,
+          imagePath: movie.backdrop_path || ""
+        }));
+
+        setMovies(moviesWithImages);
+        setImageLoading(false);
       } catch (err) {
         setError("Failed to load popular movies");
         setImageLoading(false); // Stop loading if there's an error
       }
     };
     getPopularMovies();
-
   }, []);
-
-  useEffect(() => {
-    const fetchAllImages = async () => {
-      const newImages = {};
-      setImageLoading(true);
-      
-      for (let movie of movies) {
-        try {
-          const data = await fetchData(`/movie/${movie.id}/images`, {
-            language: null,
-            page: null,
-          });
-          newImages[movie.id] = data.backdrops[0]?.file_path || "";
-        } catch (err) {
-          console.error(`Failed to load image for movie ${movie.id}`);
-        }
-      }
-
-      setImages(newImages);
-      setImageLoading(false);
-    };
-
-    if (movies.length > 0) {
-      fetchAllImages();
-    }
-  }, [movies]);
 
   const baseImageUrl = "https://image.tmdb.org/t/p/original/";
 
@@ -66,43 +46,48 @@ export default function PopularMovies() {
   return (
     <div className="flex flex-col items-center justify-center w-full relative overflow-hidden">
       {error && <p>{error}</p>}
-      <div className="w-11/12 lg:w-7/12 md:w-8/12 h-[193px] md:h-[288px] xl:h-[624px] rounded-t-xl overflow-hidden rounded-xl bg-black/80 shadow-lg relative">
+      <div className="w-11/12 lg:w-7/12 md:w-8/12 h-[193px] md:h-[288px] xl:h-[624px] rounded-t-xl overflow-hidden rounded-xl bg-gradient-to-br from-black/90 via-black to-black/50 bg-[length:200%_200%] animate-gradient shadow-lg relative">
         {movies.length > 0 ? (
           <div key={movies[next].id}>
-
-            <div className="flex items-center absolute bg-gradient-to-l from-black/5 to-white/30 z-30 left-0 top-0 h-full">
+            
+            <div className="flex items-center absolute bg-gradient-to-l from-[] backdrop-blur-[2px] z-30 left-0 top-0 h-full">
               <button onClick={handlePrev} className="text-white px-4 py-2 rounded">
                 <Image className="rotate-180" src={"/Next.svg"} height={35} width={35} />
               </button>
             </div>
              
             {/* Title */}
-
-            <div className="flex items-center justify-center absolute bottom-0 left-0 w-full z-20">
-                <h2 className="text-white">{movies[next].title}</h2>
+            <div className="flex items-center justify-center top-1 w-full absolute ">
+              <div className="flex flex-row-reverse   items-center justify-center gap-2 w-6/12 z-20">
+                <h2 className="text-white text-[14px] bg-black/30 p-2 rounded-xl">{movies[next].title}</h2>
+              </div>
             </div>
-            
+
+            <div className="flex items-center justify-center w-full absolute bottom-0 right-0">
+              <div className="flex flex-row-reverse items-center justify-between w-6/12 z-20">
+                <h2 className="text-white text-[14px] ">Rate: {Math.round(movies[next].vote_average * 10) / 10}</h2>
+                <h2 className="text-white text-[14px] ">Vote Count: {movies[next].vote_count}</h2>
+
+              </div>
+            </div>
             
             {imageLoading ? (
               <div className=""></div>
             ) : (
               <img
-                src={`${baseImageUrl}${images[movies[next].id] || ''}`}
+                src={`${baseImageUrl}${movies[next].imagePath}`}
                 alt={movies[next]?.title || "Movie Title"}
                 onLoad={() => setImageLoading(false)}
                 onError={() => setError("Failed to load image")}
                 className="w-full object-cover animate__animated animate__fadeIn "
               />
             )}
-            
 
-
-            <div className="flex items-center absolute bg-gradient-to-r from-black/5 to-white/30 z-30 right-0 top-0 h-full">
+            <div className="flex items-center absolute bg-gradient-to-r from-[]  backdrop-blur-[2px] z-30 right-0 top-0 h-full">
               <button onClick={handleNext} className="text-white px-4 py-2 rounded">
                 <Image src={"/Next.svg"} height={35} width={35} />
               </button>
             </div>
-
 
           </div>
         ) : (
