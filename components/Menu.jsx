@@ -20,7 +20,7 @@ const NavbarIconDetails = ({ selectedName }) => {
 
   return (
     <div
-      className="text-white flex flex-col gap-2 border px-2 py-2 rounded-xl shadow-lg bg-slate-800/20 animate__animated animate__fadeInRight"
+      className="text-white flex flex-col gap-2 border px-2 py-2 rounded-xl shadow-lg bg-white/15 animate__animated animate__fadeInRight"
     >
       <label className="animate__animated animate__fadeIn font-bold">
         {selectedName}
@@ -66,7 +66,7 @@ const DropDown = ({ endOfPage, status, drawer, setDrawer }) => {
       } h-fit z-40`}
     >
       <div className="flex  items-start justify-start gap-2 overflow-auto">
-        <div className="flex flex-col gap-2 w-4/12 border px-2 py-2 rounded-xl bg-slate-800/20">
+        <div className="flex flex-col gap-2 w-4/12 border px-2 py-2 rounded-xl bg-white/15 ">
           <button
             onClick={() =>  handleClickOutside()}
             className="text-white  font-bold py-1 bg-slate-700/80 shadow-lg  rounded-lg"
@@ -129,7 +129,7 @@ function Menu({ endOfPage }) {
   }, [dropDown]);
 
   return (
-    <div className="flex items-center justify-center relative">
+    <div className="flex items-center justify-center ">
       <button
         onClick={() => {
           if (dropDown) {
@@ -148,16 +148,16 @@ function Menu({ endOfPage }) {
             className="animate__animated animate__fadeIn"
             src="/Close.svg"
             alt="Menu"
-            width={20}
-            height={20}
+            width={24}
+            height={24}
           />
         ) : (
           <Image
             className="animate__animated animate__fadeIn"
             src="/MenuIcon.svg"
             alt="Menu"
-            width={20}
-            height={20}
+            width={24}
+            height={24}
           />
         )}
       </button>

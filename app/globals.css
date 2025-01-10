@@ -7,9 +7,10 @@
 @tailwind utilities;
 
 
+
 body {
   color: black;
   
-  font-family: "Vazirmatn", sans-serif;
+  font-family: "Nunito", sans-serif;
 }
 

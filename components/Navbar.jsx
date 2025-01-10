@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Menu from "@/components/Menu";
+import Searchabar from "./Searchabar";
+import Image from "next/image";
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [endOfPage, setEndOfPage] = useState(false);
+  const [openSearchBar, setOpenSearchBar] = useState(false);
+
+  const toggleSearchBar = () => {
+    console.log(openSearchBar);
+    setOpenSearchBar(!openSearchBar);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -10,8 +18,9 @@ function Navbar() {
 
       // Detect end of the page
       const scrollPosition = window.innerHeight + window.scrollY;
-      const threshold = document.documentElement.scrollHeight || document.body.offsetHeight;
-      
+      const threshold =
+        document.documentElement.scrollHeight || document.body.offsetHeight;
+
       if (scrollPosition >= threshold - 0) {
         setEndOfPage(true);
       } else {
@@ -39,17 +48,36 @@ function Navbar() {
                   }                                          
                   `}
       >
-        <div className="flex">
-          <div>AR</div>
-          <div className="text-white">2</div>
+        <div className="flex items-center gap-1 w-3/12">
+          <div className="text-[20px] leading-none">AR</div>
+          <div className="text-[12px] leading-none text-white">2</div>
         </div>
 
-        <div className="flex gap-2">
+        <Searchabar openSearchBar={openSearchBar} />
+
+
+        {/* SearchBar */}
+
+        <div className="flex gap-2  items-center justify-center w-3/12">
           {/* Login Button */}
-          
+            <div className="flex items-center justify-center relative">
+              <button
+                className="z-20 "
+                onClick={() => {
+                  toggleSearchBar();
+                }}
+              >
+                <Image
+                  className="z-20"
+                  width={24}
+                  height={24}
+                  src={"/Search.svg"}
+                />
+              </button>
+          </div>
 
           {/* SignUp Button */}
-          
+
           <Menu endOfPage={endOfPage} />
         </div>
       </div>
