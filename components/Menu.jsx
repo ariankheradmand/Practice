@@ -1,15 +1,15 @@
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 
-const buttons = ["درباره ما", "گالری", "مراجعه"];
+const buttons = ["About Us", "Gallery", "Visit"];
 const button_details = [
   {
-    name: "ورود",
-    details: ["ایمیل", "شماره تلفن", "گوگل"],
+    name: "Login",
+    details: ["Email", "Phone", "Google" , ],
   },
   {
-    name: "ثبت نام",
-    details: ["ایمیل", "شماره تلفن", "گوگل"],
+    name: "Sign up",
+    details: ["Email", "Phone", "Google" , "Github"],
   },
 ];
 
@@ -20,7 +20,6 @@ const NavbarIconDetails = ({ selectedName }) => {
 
   return (
     <div
-      dir="rtl"
       className="text-white flex flex-col gap-2 border px-2 py-2 rounded-xl shadow-lg bg-slate-800/20 animate__animated animate__fadeInRight"
     >
       <label className="animate__animated animate__fadeIn font-bold">
@@ -31,7 +30,7 @@ const NavbarIconDetails = ({ selectedName }) => {
         selectedButton.details.map((detail, index) => (
           <div
             key={index}
-            className="bg-slate-700/80 pr-2 w-24 rounded-lg animate__animated animate__fadeIn"
+            className="bg-slate-700/80 py-px w-24 rounded-lg animate__animated animate__fadeIn"
           >
             {detail}
           </div>
@@ -42,37 +41,48 @@ const NavbarIconDetails = ({ selectedName }) => {
 
 const DropDown = ({ endOfPage, status, drawer, setDrawer }) => {
     const handleClickOutside = () => {
-      setDrawer(true, event.target.textContent);
+        if (drawer.show === false ) {
+            setDrawer(true, event.target.textContent);
+        }else {
+            setDrawer(false, event.target.textContent);
+            const data = event.target.textContent
+            setTimeout(() => {
+                if (drawer.selectedName !== data) {
+                    setDrawer(true, data);
+                }
+            } , 100)
+        }
+      
     };
   return (
     <div
       dir="rtl"
-      className={`fixed w-full font-thin ${
-        endOfPage ? "mb-1 bottom-14 right-1" : "mt-1 top-14 right-1"
+      className={`fixed w-full font-thin right-0 text-center ${
+        endOfPage ? "mb-1 bottom-14 " : "mt-1 top-14 "
       } ${
         status
           ? "animate__animated animate__fadeIn"
           : "animate__animated animate__fadeOut"
       } h-fit z-40`}
     >
-      <div className="flex items-start justify-start gap-2 overflow-auto">
-        <div className="flex flex-col gap-2 w-4/12 border px-2 py-2 rounded-xl shadow-lg bg-slate-800/20">
+      <div className="flex  items-start justify-start gap-2 overflow-auto">
+        <div className="flex flex-col gap-2 w-4/12 border px-2 py-2 rounded-xl bg-slate-800/20">
           <button
             onClick={() =>  handleClickOutside()}
-            className="text-white text-right font-bold bg-slate-700/80 shadow-lg pr-2 rounded-lg"
+            className="text-white  font-bold py-1 bg-slate-700/80 shadow-lg  rounded-lg"
           >
-            ورود
+            Login
           </button>
           <button
             onClick={() => handleClickOutside()}
-            className="text-white text-right font-bold bg-slate-700/80 shadow-lg pr-2 rounded-lg"
+            className="text-white  font-bold py-1 bg-slate-700/80 shadow-lg  rounded-lg"
           >
-            ثبت نام
+            Sign up
           </button>
           {buttons.map((div) => (
             <button
               key={div}
-              className="text-white text-right hover:text-gray-800 bg-slate-600/70 shadow-lg rounded-lg pr-2 animate__animated animate__fadeInRight"
+              className="text-white  py-1 hover:text-gray-800 bg-slate-600/70 shadow-lg rounded-lg  animate__animated animate__fadeInRight"
             >
               {div}
             </button>

@@ -4,6 +4,9 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import Random from "../../components/Random";
 import { useInView } from "react-intersection-observer";
+import Head from "next/head";
+import Popular from "./Popular";
+import Hero from "../../components/Hero";
 
 function HomePage() {
   const [placement, setPlacement] = useState(-1115);
@@ -65,7 +68,12 @@ function HomePage() {
 
   return (
     <div className="flex flex-col relative items-center justify-center bg-slate-300">
+      <Head>
+        <title>Main Page</title>
+      </Head>
       <Navbar  />
+      <Hero />
+      <Popular />
       <MouseContent />
       <RandomWrapper
         value="first"
@@ -82,16 +90,7 @@ function HomePage() {
         initialPlacement={-91}
         initialRightLeft="-"
       />
-      <RandomWrapper
-        value="forth"
-        initialPlacement={420}
-        initialRightLeft=""
-      />
-      <RandomWrapper
-        value="fifth"
-        initialPlacement={931}
-        initialRightLeft="-"
-      />
+      
     </div>
   );
 }
