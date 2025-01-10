@@ -66,7 +66,7 @@ export default function PopularMovies() {
   return (
     <div className="flex flex-col items-center justify-center w-full relative overflow-hidden">
       {error && <p>{error}</p>}
-      <div className="w-11/12 lg:w-7/12 md:w-8/12 h-[193px] md:h-[288px] xl:h-[624px] rounded-t-xl overflow-hidden rounded-xl shadow-lg relative">
+      <div className="w-11/12 lg:w-7/12 md:w-8/12 h-[193px] md:h-[288px] xl:h-[624px] rounded-t-xl overflow-hidden rounded-xl bg-black/80 shadow-lg relative">
         {movies.length > 0 ? (
           <div key={movies[next].id}>
 
@@ -84,13 +84,14 @@ export default function PopularMovies() {
             
             
             {imageLoading ? (
-              <div className="h-[193px] md:h-[288px] xl:h-[624px] w-full "></div>
+              <div className=""></div>
             ) : (
               <img
                 src={`${baseImageUrl}${images[movies[next].id] || ''}`}
                 alt={movies[next]?.title || "Movie Title"}
+                onLoad={() => setImageLoading(false)}
                 onError={() => setError("Failed to load image")}
-                className="w-full object-cover animate__animated animate__fadeIn"
+                className="w-full object-cover animate__animated animate__fadeIn "
               />
             )}
             
