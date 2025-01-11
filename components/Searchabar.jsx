@@ -8,6 +8,8 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
   const [closingAnimationWidth, setClosingAnimationWidth] = useState(true);
   const [searchInput, setSearchInput] = useState("game");
   const [debouncedSearchInput, setDebouncedSearchInput] = useState("game");
+  const [filterSearches, setFilterSearches] = useState("movie");
+  const [selectedMovie, setSelectedMovie] = useState(0);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -26,7 +28,7 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
       setLoading(true);
       try {
         const data = await fetchData(
-          `/search/movie?query=${debouncedSearchInput}`,
+          `/search/${filterSearches}?query=${debouncedSearchInput}`,
           {
             language: "en-US",
             page: 1,
@@ -43,7 +45,7 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
     if (debouncedSearchInput.length > 3) {
       Search();
     }
-  }, [debouncedSearchInput]);
+  }, [debouncedSearchInput ,filterSearches]);
 
   // Handle search bar animation
   useEffect(() => {
@@ -76,15 +78,15 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
     return () => clearInterval(interval);
   }, [openSearchBar]);
 
-  const posterPath = results[0]?.poster_path || "";
-  const posterAlt = results[0]?.title || "";
+  const posterPath = results[selectedMovie]?.poster_path || "";
+  const posterAlt = results[selectedMovie]?.title || "";
   return (
     <div className="flex w-full items-center justify-center">
       {openSearchBar ? (
         <div className="z-30 w-full absolute top-40 flex animate__animated animate__fadeIn">
           <div className="w-full relative rounded-md flex shadow-md border">
             <div className="w-full bg-gradient-to-br from-gray-100 to-gray-900/[0.95] blur-sm bg-[length:200%_200%] animate-gradient absolute h-full rounded-md"></div>
-            <div className="w-6/12 h-full flex flex-col z-10 gap-3 py-2 pl-2 font-thin">
+            <div className="w-6/12 h-full flex flex-col z-10 gap-3 py-2 pl-2 font-thin text-sm">
               {results.length > 0 && results[0]?.name !== "" ? (
                 results.map((data, index) => (
                   <div
@@ -94,7 +96,14 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
                     {loading ? (
                       <div className="w-full h-6 rounded-md bg-gradient-to-r py-2 from-white/30 to-black/30"></div>
                     ) : (
-                      <div className="flex items-center justify-between bg-gray-900 w-full text-white pl-2 pr-1 py-2 rounded-md">
+                      <div
+                        onClick={() => setSelectedMovie(index)}
+                        className={`flex items-center ${
+                          selectedMovie === index
+                            ? "bg-gray-900"
+                            : "bg-gray-700"
+                        } justify-between  w-full text-white pl-2 pr-1 py-2 rounded-md`}
+                      >
                         <h2>
                           {(data.title || "Unknown").slice(0, 16) + "..."}
                         </h2>
@@ -116,14 +125,12 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
             </div>
             <div className="w-6/12 py-2 h-full z-10 flex items-center justify-center">
               {loading === true ? (
-              <div className="w-11/12 h-5/6 rounded-md bg-gradient-to-r from-white/30 to-black/30"></div>
-
+                <div className="w-11/12 h-5/6 rounded-md bg-gradient-to-r from-white/30 to-black/30"></div>
               ) : posterPath === "" ? (
                 <img
                   className="h-5/6 w-11/12 rounded-md"
                   src={`/BrokenImage.svg`}
                   alt={`${posterAlt}`}
-                  loading="lazy"
                 />
               ) : (
                 <img
@@ -161,7 +168,15 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
           >
             {collection.map((data, index) => (
               <div className="relative" key={index}>
-                <button className="bg-black/30 py-1 px-2">{data}</button>
+                <button
+                  onClick={() => setFilterSearches(data)}
+                  value={data}
+                  className={`${
+                    filterSearches === data ? "bg-black/50" : "bg-black/30"
+                  } py-1 px-2`}
+                >
+                  {data}
+                </button>
               </div>
             ))}
           </div>
