@@ -21,7 +21,7 @@ function Navbar() {
       const threshold =
         document.documentElement.scrollHeight || document.body.offsetHeight;
 
-      if (scrollPosition >= threshold - 0) {
+      if (scrollPosition >= threshold - 60) {
         setEndOfPage(true);
       } else {
         setEndOfPage(false);
