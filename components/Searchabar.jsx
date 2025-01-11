@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 const collection = ["movie", "tv", "person"];
 
-function Searchabar({ openSearchBar }) {
+function Searchabar({ openSearchBar , endOfPage }) {
   const [animationWidth, setAnimationWidth] = useState(0);
   const [closingAnimationWidth, setClosingAnimationWidth] = useState(true);
 
@@ -55,10 +55,10 @@ function Searchabar({ openSearchBar }) {
             openSearchBar ? "visible" : "invisible"
           } flex items-center justify-start relative  text-white gap-2  w-[160px] left-0`}
         >
-            <div className="absolute left-0 top-3 w-full flex justify-between rounded-b-md overflow-hidden border-x-2 border-b-2 ">
+            <div className={`absolute ${endOfPage ? "left-0 -top-[70px] rounded-t-md border-x-2 border-t-2" : "left-0 top-3 rounded-b-md border-x-2 border-b-2"} w-full flex justify-between  `}>
           {collection.map((data, index) => (
             <div className="" key={index}>
-                <button  className="bg-white/20 py-1 px-2 ">{data}</button>
+                <button  className="bg-black/30 py-1 px-2 ">{data}</button>
             </div>
           ))}
           </div>

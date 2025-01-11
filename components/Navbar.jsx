@@ -41,7 +41,7 @@ function Navbar() {
                    xl:w-7/12 xl:text-2xl md:w-8/12 
                   ${
                     endOfPage
-                      ? ` translate-y-[calc(100vh-26px)] w-full rounded-b-none rounded-t-xl`
+                      ? ` translate-y-[calc(100vh-23px)] w-full rounded-b-none rounded-t-xl`
                       : isScrolled
                       ? "translate-y-10 rounded-xl"
                       : "translate-y-6 w-full"
@@ -53,7 +53,7 @@ function Navbar() {
           <div className="text-[12px] leading-none text-white">2</div>
         </div>
 
-        <Searchabar openSearchBar={openSearchBar} />
+        <Searchabar endOfPage={endOfPage} openSearchBar={openSearchBar} />
 
 
         {/* SearchBar */}
