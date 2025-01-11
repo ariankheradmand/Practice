@@ -105,7 +105,7 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
             endOfPage ? "-top-[340px]" : "top-40"
           }  flex animate__animated animate__fadeIn`}
         >
-          <div className="w-full relative rounded-md flex shadow-md border">
+          <div className="w-full relative rounded-md flex shadow-md border min-h-[342px]">
             <div className="w-full bg-gradient-to-br from-gray-100 to-gray-900/[0.95] blur-sm bg-[length:200%_200%] animate-gradient absolute h-full rounded-md"></div>
             <div className="w-6/12 h-full flex flex-col z-10 gap-3 py-2 pl-2 font-thin text-sm">
               {results.length > 0 && results[0]?.name !== "" ? (
@@ -115,7 +115,7 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
                     className="flex items-center w-full text-start"
                   >
                     {loading ? (
-                      <div className="w-full h-6 rounded-md bg-gradient-to-r py-2 from-white/30 to-black/30"></div>
+                      <div className="w-full h-[36px] rounded-md bg-gradient-to-r py-2 from-white/60 to-black/60 bg-[length:200%_200%] animate-gradient"></div>
                     ) : (
                       <div
                         onClick={() => setSelectedMovie(index)}
