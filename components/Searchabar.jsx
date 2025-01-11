@@ -175,7 +175,7 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
                   {filterSearches === "person" && (
                     <div className="font-normal absolute bottom-0 w-full h-24 p-2 flex flex-col items-start justify-start shadow-md bg-gradient-to-r from-white/60 to-white/90 bg-[length:200%_200%] animate-gradient rounded-b-md">
                       <span className="font-bold">Known For:</span>
-                      <div className="flex gap-1 text-xs">
+                      <div className="flex gap-1 text-[9px]">
                         {results[selectedMovie]?.known_for
                           ?.slice(0, 2)
                           .map((knownForItem) => (
