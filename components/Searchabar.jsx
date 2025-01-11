@@ -9,6 +9,7 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
   const [searchInput, setSearchInput] = useState("game");
   const [debouncedSearchInput, setDebouncedSearchInput] = useState("game");
   const [filterSearches, setFilterSearches] = useState("movie");
+  const [imageLoading, setImageLoading] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(0);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -42,10 +43,10 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
       }
     };
 
-    if (debouncedSearchInput.length > 3) {
+    if (debouncedSearchInput.length > 2) {
       Search();
     }
-  }, [debouncedSearchInput ,filterSearches]);
+  }, [debouncedSearchInput, filterSearches]);
 
   // Handle search bar animation
   useEffect(() => {
@@ -79,11 +80,31 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
   }, [openSearchBar]);
 
   const posterPath = results[selectedMovie]?.poster_path || "";
+  const profilePath = results[selectedMovie]?.profile_path || "";
+
+  useEffect(() => {
+    if (posterPath || profilePath) {
+      setImageLoading(true);
+      const img = new Image();
+      img.src = `https://image.tmdb.org/t/p/original${
+        posterPath || profilePath
+      }`;
+      img.onload = () => setImageLoading(false);
+      img.onerror = () => setImageLoading(false);
+    } else {
+      setImageLoading(false);
+    }
+  }, [posterPath, profilePath]);
+
   const posterAlt = results[selectedMovie]?.title || "";
   return (
     <div className="flex w-full items-center justify-center">
       {openSearchBar ? (
-        <div className="z-30 w-full absolute top-40 flex animate__animated animate__fadeIn">
+        <div
+          className={`z-30 w-full absolute ${
+            endOfPage ? "-top-[340px]" : "top-40"
+          }  flex animate__animated animate__fadeIn`}
+        >
           <div className="w-full relative rounded-md flex shadow-md border">
             <div className="w-full bg-gradient-to-br from-gray-100 to-gray-900/[0.95] blur-sm bg-[length:200%_200%] animate-gradient absolute h-full rounded-md"></div>
             <div className="w-6/12 h-full flex flex-col z-10 gap-3 py-2 pl-2 font-thin text-sm">
@@ -102,43 +123,78 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
                           selectedMovie === index
                             ? "bg-gray-900"
                             : "bg-gray-700"
-                        } justify-between  w-full text-white pl-2 pr-1 py-2 rounded-md`}
+                        } justify-between shadow-md w-full text-white pl-2 pr-1 py-2 rounded-md`}
                       >
-                        <h2>
-                          {(data.title || "Unknown").slice(0, 16) + "..."}
+                        <h2 >
+                          {(
+                            data.title ||
+                            data.original_name ||
+                            "Unknown"
+                          ).slice(0, 16)}
                         </h2>
 
-                        <h2>
-                          {data.release_date
-                            ? new Date(data.release_date).getFullYear()
-                            : "N/A"}
-                        </h2>
+                        {filterSearches === "movie" && (
+                          <h2>
+                            {data.release_date
+                              ? new Date(data.release_date).getFullYear()
+                              : "N/A"}
+                          </h2>
+                        )}
                       </div>
                     )}
                   </div>
                 ))
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-white">
-                  <span>Nothing Founds!</span>
+                <div className="w-full h-full flex items-center flex-col justify-center text-white">
+                  <img className="w-20 h-20" src={"/NotFound.svg"} />{" "}
+                  <div> Nothing Found :( </div>
                 </div>
               )}
             </div>
             <div className="w-6/12 py-2 h-full z-10 flex items-center justify-center">
               {loading === true ? (
-                <div className="w-11/12 h-5/6 rounded-md bg-gradient-to-r from-white/30 to-black/30"></div>
-              ) : posterPath === "" ? (
+                <div className="w-11/12 h-full rounded-md bg-gradient-to-r from-white/30 to-black/30 animate-gradient"></div>
+              ) : (posterPath || profilePath) === "" ? (
                 <img
                   className="h-5/6 w-11/12 rounded-md"
                   src={`/BrokenImage.svg`}
                   alt={`${posterAlt}`}
                 />
+              ) : imageLoading ? (
+                <div className="w-11/12 h-5/6 rounded-md bg-gradient-to-r from-white/30 to-black/30 animate-gradient"></div>
               ) : (
-                <img
-                  className="h-full w-11/12 object-cover rounded-md"
-                  src={`https://image.tmdb.org/t/p/original${posterPath}`}
-                  alt={`${posterAlt}`}
-                  loading="lazy"
-                />
+                <div className="h-full w-11/12 relative">
+                  <img
+                    className="h-full w-full object-cover rounded-md"
+                    src={`https://image.tmdb.org/t/p/original${
+                      posterPath || profilePath
+                    }`}
+                    alt={`${posterAlt}`}
+                    loading="lazy"
+                  />
+                  {filterSearches === "person" && (
+                    <div className="font-normal absolute bottom-0 w-full h-24 p-2 flex flex-col items-start justify-start shadow-md bg-gradient-to-r from-white/60 to-white/90 bg-[length:200%_200%] animate-gradient rounded-b-md">
+                      <span className="font-bold">Known For:</span>
+                      <div className="flex gap-1 text-xs">
+                        {results[selectedMovie]?.known_for
+                          ?.slice(0, 2)
+                          .map((knownForItem) => (
+                            <div
+                              className="bg-gray-400 rounded-md p-px"
+                              key={knownForItem.id || index}
+                            >
+                              {(() => {
+                                const title = knownForItem.title ?? "";
+                                return title.length > 40
+                                  ? title.slice(0, 40) + "..."
+                                  : title;
+                              })()}
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               )}
             </div>
           </div>
@@ -164,7 +220,7 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
               endOfPage
                 ? "left-0 -top-[70px] rounded-t-md border-x-2 border-t-2"
                 : "left-0 top-3 rounded-b-md border-x-2 border-b-2"
-            } bg-white/50 backdrop-blur-md w-full flex justify-between`}
+            } bg-white/50 backdrop-blur-md w-full flex justify-center`}
           >
             {collection.map((data, index) => (
               <div className="relative" key={index}>
