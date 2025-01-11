@@ -8,7 +8,6 @@ function Navbar() {
   const [openSearchBar, setOpenSearchBar] = useState(false);
 
   const toggleSearchBar = () => {
-    console.log(openSearchBar);
     setOpenSearchBar(!openSearchBar);
   };
 

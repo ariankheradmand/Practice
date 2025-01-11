@@ -27,9 +27,4 @@ export default {
     },
   },
   plugins: [],
-  variants: {
-    extend: {
-      backdropBlur: ['responsive'], 
-    },
-  },
 } satisfies Config;
