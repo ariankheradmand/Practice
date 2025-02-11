@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/Navbar";
 import fetchData from "../../../../utils/tmdb";
 import { Clock, Flag, Star, Calendar, Share2 } from "lucide-react";
 import "../../../../app/globals.css"

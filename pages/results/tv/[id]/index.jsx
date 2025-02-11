@@ -1,18 +1,17 @@
-
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/Navbar";
 import fetchData from "../../../../utils/tmdb";
-import { 
-  Clock, 
-  Flag, 
-  Star, 
-  Calendar, 
-  Share2, 
-  Tv, 
+import {
+  Clock,
+  Flag,
+  Star,
+  Calendar,
+  Share2,
+  Tv,
   PlayCircle,
   ChevronDown,
-  ChevronRight 
+  ChevronRight,
 } from "lucide-react";
 
 const TVShowDetail = () => {
@@ -30,7 +29,7 @@ const TVShowDetail = () => {
       try {
         const [showData, seasonData] = await Promise.all([
           fetchData(`/tv/${showId}?language=en-US`),
-          fetchData(`/tv/${showId}/season/${selectedSeason}?language=en-US`)
+          fetchData(`/tv/${showId}/season/${selectedSeason}?language=en-US`),
         ]);
         setShow({ ...showData, currentSeason: seasonData });
       } catch (error) {
@@ -46,7 +45,7 @@ const TVShowDetail = () => {
   }, [id, selectedSeason]);
 
   const formatEpisodeCount = (count) => {
-    return `${count} Episode${count !== 1 ? 's' : ''}`;
+    return `${count} Episode${count !== 1 ? "s" : ""}`;
   };
 
   if (loading) {
@@ -64,7 +63,7 @@ const TVShowDetail = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-black gap-4">
         <div className="text-white text-xl">TV Show not found</div>
-        <button 
+        <button
           onClick={() => router.back()}
           className="px-6 py-2 bg-white/10 hover:bg-white/20 transition-colors rounded-full text-white"
         >
@@ -77,7 +76,7 @@ const TVShowDetail = () => {
   return (
     <div className="min-h-screen bg-black">
       <Navbar />
-      
+
       <div className="relative animate-fadeIn">
         {/* Backdrop */}
         <div className="absolute inset-0 overflow-hidden">
@@ -85,7 +84,7 @@ const TVShowDetail = () => {
             src={`https://image.tmdb.org/t/p/original${show.backdrop_path}`}
             alt=""
             className={`w-full h-full object-cover transition-opacity duration-700 ${
-              isImageLoaded ? 'opacity-30' : 'opacity-0'
+              isImageLoaded ? "opacity-30" : "opacity-0"
             }`}
             onLoad={() => setIsImageLoaded(true)}
           />
@@ -106,7 +105,8 @@ const TVShowDetail = () => {
                 <div className="absolute top-4 left-4 flex items-center gap-2 bg-black/80 backdrop-blur-sm rounded-full px-4 py-2">
                   <Tv className="w-4 h-4 text-white" />
                   <span className="text-white text-sm font-medium">
-                    {show.number_of_seasons} Season{show.number_of_seasons !== 1 ? 's' : ''}
+                    {show.number_of_seasons} Season
+                    {show.number_of_seasons !== 1 ? "s" : ""}
                   </span>
                 </div>
               </div>
@@ -119,7 +119,7 @@ const TVShowDetail = () => {
                     {show.vote_average?.toFixed(1)} / 10
                   </span>
                 </div>
-                
+
                 <div className="relative">
                   <button
                     onClick={() => setShowShareTooltip(!showShareTooltip)}
@@ -143,12 +143,19 @@ const TVShowDetail = () => {
                   className="w-full flex items-center justify-between text-white p-2 hover:bg-white/5 rounded-xl transition-colors"
                 >
                   <span className="font-medium">Season {selectedSeason}</span>
-                  <ChevronDown className={`w-5 h-5 transition-transform ${showSeasonDrawer ? 'rotate-180' : ''}`} />
+                  <ChevronDown
+                    className={`w-5 h-5 transition-transform ${
+                      showSeasonDrawer ? "rotate-180" : ""
+                    }`}
+                  />
                 </button>
-                
+
                 {showSeasonDrawer && (
                   <div className="mt-2 space-y-1 max-h-64 overflow-y-auto">
-                    {Array.from({ length: show.number_of_seasons }, (_, i) => i + 1).map((season) => (
+                    {Array.from(
+                      { length: show.number_of_seasons },
+                      (_, i) => i + 1
+                    ).map((season) => (
                       <button
                         key={season}
                         onClick={() => {
@@ -157,8 +164,8 @@ const TVShowDetail = () => {
                         }}
                         className={`w-full text-left p-2 rounded-lg transition-colors ${
                           selectedSeason === season
-                            ? 'bg-white/20 text-white'
-                            : 'text-white/70 hover:bg-white/10'
+                            ? "bg-white/20 text-white"
+                            : "text-white/70 hover:bg-white/10"
                         }`}
                       >
                         Season {season}
@@ -176,9 +183,7 @@ const TVShowDetail = () => {
                   {show.name}
                 </h1>
                 {show.tagline && (
-                  <p className="text-xl text-white/70 italic">
-                    {show.tagline}
-                  </p>
+                  <p className="text-xl text-white/70 italic">{show.tagline}</p>
                 )}
               </div>
 
@@ -186,10 +191,10 @@ const TVShowDetail = () => {
                 <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
                   <Calendar className="w-4 h-4" />
                   <time dateTime={show.first_air_date}>
-                    {new Date(show.first_air_date).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
+                    {new Date(show.first_air_date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
                     })}
                   </time>
                 </div>
@@ -269,8 +274,14 @@ const TVShowDetail = () => {
 
       <style jsx>{`
         @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
         .animate-fadeIn {
           animation: fadeIn 0.7s ease-out forwards;
