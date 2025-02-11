@@ -15,7 +15,6 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
   const [selectedMovie, setSelectedMovie] = useState(0);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-
   // Debounce search input to reduce API calls
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -122,7 +121,6 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
           </div>
         </div>
       ) : null}
-      
 
       <div className="relative w-11/12 flex flex-col items-center justify-center">
         <input

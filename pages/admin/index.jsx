@@ -1,151 +1,200 @@
-import "../../app/globals.css";
-import Image from "next/image";
-import React, { useEffect, useState, useCallback } from "react";
+import "../../app/globals.css"
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import BarLoader from "react-spinners/BarLoader";
+import { Check, X, Eye, EyeOff } from "lucide-react";
 
-const Login = () => {
+const AuthPage = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [formStatus, setFormStatus] = useState({
-    invalid: false,
-    success: false,
-    usernameValid: false,
-    passwordValid: false,
+  const [validationState, setValidationState] = useState({
+    username: {
+      minLength: false,
+      noSpaces: false,
+      alphanumeric: false,
+    },
+    password: {
+      minLength: false,
+      hasNumber: false,
+      hasSpecial: false,
+      hasUppercase: false,
+    },
+    touched: {
+      username: false,
+      password: false,
+    },
   });
-  const router = useRouter();
 
-  // Updates form data and resets status flags
-  const handleInputChange = useCallback((e) => {
+  const validateField = (name, value) => {
+    if (name === "username") {
+      return {
+        minLength: value.length >= 7,
+        noSpaces: !/\s/.test(value),
+        alphanumeric: /^[a-zA-Z0-9]+$/.test(value),
+      };
+    } else if (name === "password") {
+      return {
+        minLength: value.length >= 7,
+        hasNumber: /\d/.test(value),
+        hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(value),
+        hasUppercase: /[A-Z]/.test(value),
+      };
+    }
+    return {};
+  };
+
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setFormStatus((prev) => ({ ...prev, invalid: false, success: false }));
-  }, []);
-
-  // Validates username and password on change
-  useEffect(() => {
-    setFormStatus((prev) => ({
+    setValidationState((prev) => ({
       ...prev,
-      usernameValid: formData.username.length >= 7,
-      passwordValid: formData.password.length >= 7,
+      [name]: validateField(name, value),
+      touched: { ...prev.touched, [name]: true },
     }));
-  }, [formData]);
+  };
 
-  // Handles login submission
-  const handleLogin = async (e) => {
+  const isFormValid = () => {
+    const usernameValid = Object.values(validationState.username).every(Boolean);
+    const passwordValid = Object.values(validationState.password).every(Boolean);
+    return usernameValid && passwordValid;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isFormValid()) return;
+
     setLoading(true);
-    setFormStatus((prev) => ({ ...prev, invalid: false, success: false }));
-
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        setFormStatus((prev) => ({ ...prev, success: true }));
-        setTimeout(() => router.push("/admin/dashboard"), 5000);
-      } else {
-        setFormData((prev) => ({ ...prev, username: "", password: ""}));
-        setFormStatus((prev) => ({ ...prev, invalid: true }));
-        
-      }
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      router.push("/dashboard");
     } catch (error) {
-      console.error("Login error:", error);
-      setFormStatus((prev) => ({ ...prev, invalid: true }));
+      console.error("Auth error:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  // Utility to determine input border color
-  const getInputBorderClass = (isValid) =>
-    isValid ? "border-green-400" : "border-red-400";
-
-  // Button styles based on status
-  const getButtonClass = () => {
-    if (loading) return "bg-gray-400 cursor-not-allowed";
-    if (formStatus.success) return "bg-green-400";
-    return "bg-blue-500 hover:bg-blue-600";
-  };
+  const ValidationIcon = ({ valid }) =>
+    valid ? (
+      <Check className="validation-icon valid" />
+    ) : (
+      <X className="validation-icon invalid" />
+    );
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gradient-to-r from-blue-400 to-indigo-500 w-full">
-      <form
-        onSubmit={handleLogin}
-        className={`flex flex-col items-center justify-center ${formStatus.success && "border-green-400 border-2"} gap-4 bg-gradient-to-br from-white to-gray-300 p-6 rounded-lg shadow-lg w-96`}
-      >
-        <h1 className="text-xl font-bold text-gray-700">Welcome</h1>
-
-        {/* Username Input */}
-        <input
-          type="text"
-          name="username"
-          className={`text-black py-2 px-3 border rounded-lg outline-none w-full focus:ring focus:ring-blue-300 transition-all ${getInputBorderClass(
-            formStatus.usernameValid
-          )}`}
-          placeholder="Username"
-          value={formData.username}
-          onChange={handleInputChange}
-        />
-
-        {/* Password Input */}
-        <input
-          type="password"
-          name="password"
-          className={`text-black py-2 px-3 border rounded-lg outline-none w-full focus:ring focus:ring-blue-300 transition-all ${getInputBorderClass(
-            formStatus.passwordValid
-          )}`}
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleInputChange}
-        />
-
-        {/* Validation Feedback */}
-        <div className="w-full border border-dashed rounded-lg p-4">
-          {[{ label: "Username", isValid: formStatus.usernameValid }, { label: "Password", isValid: formStatus.passwordValid }].map(
-            ({ label, isValid }, index) => (
-              <div key={index} className="flex items-center gap-2 pt-2">
-                <Image
-                  src={isValid ? "/Check.svg" : "/False.svg"}
-                  alt={isValid ? "Valid" : "Invalid"}
-                  width={20}
-                  height={20}
-                />
-                <p className={`text-sm ${isValid ? "text-green-600" : "text-red-500 animate__animated animate__headShake"}`}>
-                  {label} must be at least 7 characters
-                </p>
-              </div>
-            )
-          )}
+    <div className="auth-container">
+      <div className="auth-card fade-in">
+        <div className="auth-header">
+          <h1>Welcome Back</h1>
+          <p>Please sign in to continue</p>
         </div>
 
-        {/* Submit Button */}
-        <button
-          disabled={!formStatus.usernameValid || !formStatus.passwordValid || loading}
-          type="submit"
-          className={` rounded-lg w-full text-white overflow-hidden ${getButtonClass()}`}
-        >
-          {loading ? (
-            <BarLoader height={15} width={350} color="#fff" />
-          ) : formStatus.success ? (
-            <p className="py-2">Success</p>
-          ) : (
-            <p className="py-2">Login</p>
-          )}
-        </button>
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="form-group slide-in">
+            <label htmlFor="username">Username</label>
+            <div className="input-wrapper">
+              <input
+                id="username"
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                className={`form-input ${
+                  validationState.touched.username &&
+                  !Object.values(validationState.username).every(Boolean)
+                    ? "invalid"
+                    : ""
+                }`}
+                placeholder="Enter your username"
+                autoComplete="username"
+              />
+            </div>
+            {validationState.touched.username && (
+              <div className="validation-list">
+                {Object.entries(validationState.username).map(([key, valid]) => (
+                  <div key={key} className="validation-item fade-in">
+                    <ValidationIcon valid={valid} />
+                    <span className={valid ? "valid" : "invalid"}>
+                      {key === "minLength" && "At least 7 characters"}
+                      {key === "noSpaces" && "No spaces allowed"}
+                      {key === "alphanumeric" && "Only letters and numbers"}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
-        {/* Error Message */}
-        {formStatus.invalid && <p className="text-sm text-red-500">Invalid username or password</p>}
-      </form>
+          <div className="form-group slide-in">
+            <label htmlFor="password">Password</label>
+            <div className="input-wrapper">
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className={`form-input ${
+                  validationState.touched.password &&
+                  !Object.values(validationState.password).every(Boolean)
+                    ? "invalid"
+                    : ""
+                }`}
+                placeholder="Enter your password"
+                autoComplete="current-password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="toggle-password"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <EyeOff className="icon" />
+                ) : (
+                  <Eye className="icon" />
+                )}
+              </button>
+            </div>
+            {validationState.touched.password && (
+              <div className="validation-list">
+                {Object.entries(validationState.password).map(([key, valid]) => (
+                  <div key={key} className="validation-item fade-in">
+                    <ValidationIcon valid={valid} />
+                    <span className={valid ? "valid" : "invalid"}>
+                      {key === "minLength" && "At least 7 characters"}
+                      {key === "hasNumber" && "Contains a number"}
+                      {key === "hasSpecial" && "Contains a special character"}
+                      {key === "hasUppercase" && "Contains an uppercase letter"}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            disabled={!isFormValid() || loading}
+            className={`submit-button ${loading ? "loading" : ""}`}
+          >
+            {loading ? (
+              <div className="loading-wrapper">
+                <div className="loading-spinner"></div>
+                <span>Signing in...</span>
+              </div>
+            ) : (
+              "Sign In"
+            )}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
 
-export default Login;
+export default AuthPage;

@@ -52,7 +52,7 @@ function Navbar() {
           <div className="text-[12px] leading-none text-white">2</div>
         </div>
 
-        <Searchabar endOfPage={endOfPage} openSearchBar={openSearchBar} />
+        <Searchabar isScrolled={isScrolled} endOfPage={endOfPage} openSearchBar={openSearchBar} />
 
 
         {/* SearchBar */}
