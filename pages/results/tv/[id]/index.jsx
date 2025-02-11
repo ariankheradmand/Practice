@@ -13,6 +13,7 @@ import {
   ChevronDown,
   ChevronRight,
 } from "lucide-react";
+import "../../../../app/globals.css";
 
 const TVShowDetail = () => {
   const router = useRouter();
