@@ -2,24 +2,24 @@ import React, { useEffect, useState } from "react";
 import fetchData from "../utils/tmdb";
 import SearchResults from "./SearchResults";
 import FilterButtons from "./FilterButtons";
+import { Search } from "lucide-react";
 
 const collection = ["movie", "tv", "person"];
 
 const Searchabar = ({ openSearchBar, endOfPage }) => {
-  const [animationWidth, setAnimationWidth] = useState(0);
-  const [closingAnimationWidth, setClosingAnimationWidth] = useState(true);
-  const [searchInput, setSearchInput] = useState("game");
-  const [debouncedSearchInput, setDebouncedSearchInput] = useState("game");
+  const [searchInput, setSearchInput] = useState("");
+  const [debouncedSearchInput, setDebouncedSearchInput] = useState("");
   const [filterSearches, setFilterSearches] = useState("movie");
   const [imageLoading, setImageLoading] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(0);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+
   // Debounce search input to reduce API calls
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearchInput(searchInput);
-    }, 100); // Adjust debounce delay as needed
+    }, 300); // Increased debounce delay for better performance
 
     return () => clearTimeout(timer);
   }, [searchInput]);
@@ -36,7 +36,7 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
             page: 1,
           }
         );
-        setResults((data.results || []).slice(0, 7)); // Ensure results is always an array and take only the first 7 elements
+        setResults((data.results || []).slice(0, 7));
         setLoading(false);
       } catch (err) {
         setLoading(false);
@@ -46,99 +46,62 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
 
     if (debouncedSearchInput.length > 2) {
       Search();
+    } else {
+      setResults([]);
     }
   }, [debouncedSearchInput, filterSearches]);
 
-  // Handle search bar animation
-  useEffect(() => {
-    let interval;
-
-    if (openSearchBar) {
-      setClosingAnimationWidth(true);
-      interval = setInterval(() => {
-        setAnimationWidth((prev) => {
-          if (prev >= 180) {
-            clearInterval(interval);
-            return 180;
-          }
-          return prev + 5;
-        });
-      }, 20);
-    } else {
-      interval = setInterval(() => {
-        setAnimationWidth((prev) => {
-          if (prev <= 0) {
-            clearInterval(interval);
-            return 0;
-          }
-          return prev - 5;
-        });
-        setClosingAnimationWidth((prev) => !prev);
-      }, 20);
-    }
-
-    return () => clearInterval(interval);
-  }, [openSearchBar]);
-
-  const posterPath = results[selectedMovie]?.poster_path || "";
-  const profilePath = results[selectedMovie]?.profile_path || "";
-
-  useEffect(() => {
-    if (posterPath || profilePath) {
-      setImageLoading(true);
-      const img = new Image();
-      img.src = `https://image.tmdb.org/t/p/original${
-        posterPath || profilePath
-      }`;
-      img.onload = () => setImageLoading(false);
-      img.onerror = () => setImageLoading(false);
-    } else {
-      setImageLoading(false);
-    }
-  }, [posterPath, profilePath]);
-
-  const posterAlt = results[selectedMovie]?.title || "";
   return (
-    <div className="flex w-full items-center justify-center">
-      {openSearchBar ? (
-        <div
-          className={`z-30 w-full absolute ${
-            endOfPage ? "-top-[450px]" : "top-40"
-          } flex animate__animated animate__fadeIn`}
-        >
-          <div className="w-full relative rounded-md flex shadow-md border min-h-[342px]">
-            <SearchResults
-              results={results}
-              selectedMovie={selectedMovie}
-              filterSearches={filterSearches}
-              loading={loading}
-              imageLoading={imageLoading}
-              posterPath={posterPath}
-              profilePath={profilePath}
-              posterAlt={posterAlt}
-              setSelectedMovie={setSelectedMovie}
-            />
-          </div>
+    <div className="relative w-full">
+      {/* Search Input */}
+      <div className="relative">
+        <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+          <Search className="w-4 h-4 text-gray-400" strokeWidth={2} />
         </div>
-      ) : null}
-
-      <div className="relative w-11/12 flex flex-col items-center justify-center">
         <input
-          onChange={(event) => setSearchInput(event.target.value)}
-          placeholder="Search"
-          style={{ width: `${animationWidth}px` }}
-          className={`${
-            closingAnimationWidth ? "visible" : "invisible"
-          } bg-white/20 text-white placeholder:text-white/60 font-thin h-[24px] pl-1 rounded-md transition-all`}
-        />
-        <FilterButtons
-          collection={collection}
-          filterSearches={filterSearches}
-          setFilterSearches={setFilterSearches}
-          openSearchBar={openSearchBar}
-          endOfPage={endOfPage}
+          type="text"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          placeholder="Search movies, TV shows, or people..."
+          className={`
+            w-full h-10 pl-10 pr-4 
+            bg-white/10 backdrop-blur-sm
+            text-white placeholder-gray-400
+            rounded-lg border border-white/10
+            focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/50
+            transition-all duration-200
+          `}
         />
       </div>
+
+      {/* Search Results */}
+      {openSearchBar &&
+        (results.length > 0 || debouncedSearchInput.length > 2) && (
+          <div className="absolute left-0 right-0 mt-2">
+            <FilterButtons
+              collection={collection}
+              filterSearches={filterSearches}
+              setFilterSearches={setFilterSearches}
+              openSearchBar={openSearchBar}
+              endOfPage={endOfPage}
+            />
+            <div className="mt-2">
+              <SearchResults
+                results={results}
+                selectedMovie={selectedMovie}
+                filterSearches={filterSearches}
+                loading={loading}
+                imageLoading={imageLoading}
+                posterPath={results[selectedMovie]?.poster_path}
+                profilePath={results[selectedMovie]?.profile_path}
+                posterAlt={
+                  results[selectedMovie]?.title || results[selectedMovie]?.name
+                }
+                setSelectedMovie={setSelectedMovie}
+              />
+            </div>
+          </div>
+        )}
     </div>
   );
 };

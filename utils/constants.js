@@ -1,0 +1,97 @@
+import {
+  TrendingUp,
+  Star,
+  Calendar,
+  Clock,
+  Film,
+  Tv,
+  Flame,
+  Palette,
+  Zap,
+  Layers,
+  Trophy,
+} from "lucide-react";
+
+// Section definitions
+export const SECTIONS = [
+  {
+    id: "trending",
+    title: "Trending Now",
+    icon: TrendingUp,
+    endpoint: "/trending/movie/day",
+    color: "from-blue-500 to-purple-500",
+  },
+  {
+    id: "top_rated",
+    title: "Top Rated",
+    icon: Star,
+    endpoint: "/movie/top_rated",
+    color: "from-yellow-500 to-orange-500",
+  },
+  {
+    id: "upcoming",
+    title: "Coming Soon",
+    icon: Calendar,
+    endpoint: "/movie/upcoming",
+    color: "from-green-500 to-emerald-500",
+  },
+  {
+    id: "now_playing",
+    title: "Now Playing",
+    icon: Film,
+    endpoint: "/movie/now_playing",
+    color: "from-pink-500 to-rose-500",
+  },
+  {
+    id: "popular",
+    title: "Popular TV Shows",
+    icon: Tv,
+    endpoint: "/tv/popular",
+    color: "from-purple-500 to-indigo-500",
+    type: "tv",
+  },
+  {
+    id: "airing_today",
+    title: "Airing Today",
+    icon: Clock,
+    endpoint: "/tv/airing_today",
+    color: "from-red-500 to-pink-500",
+    type: "tv",
+  },
+  // New sections
+  {
+    id: "custom_with_genres=28,12",
+    title: "Action & Adventure",
+    icon: Flame,
+    endpoint: "/discover/movie?with_genres=28,12",
+    color: "from-orange-500 to-red-600",
+  },
+  {
+    id: "custom_with_genres=16",
+    title: "Animation Spotlight",
+    icon: Palette,
+    endpoint: "/discover/movie?with_genres=16",
+    color: "from-cyan-500 to-blue-600",
+  },
+  {
+    id: "custom_with_genres=878",
+    title: "Sci-Fi Universe",
+    icon: Zap,
+    endpoint: "/discover/movie?with_genres=878",
+    color: "from-violet-500 to-purple-600",
+  },
+  {
+    id: "custom_with_genres=99",
+    title: "Documentaries",
+    icon: Layers,
+    endpoint: "/discover/movie?with_genres=99",
+    color: "from-emerald-500 to-green-600",
+  },
+  {
+    id: "custom_sort_by=vote_average.desc&vote_count.gte=1000",
+    title: "Award Winners",
+    icon: Trophy,
+    endpoint: "/discover/movie?sort_by=vote_average.desc&vote_count.gte=1000",
+    color: "from-amber-500 to-yellow-600",
+  },
+];

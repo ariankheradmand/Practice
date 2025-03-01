@@ -1,178 +1,98 @@
-import Image from "next/image";
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
+import Link from "next/link";
+import {
+  LogIn,
+  UserPlus,
+  Info,
+  Image as GalleryIcon,
+  MapPin,
+  Mail,
+  Phone,
+  Github,
+  Chrome,
+} from "lucide-react";
 
-const buttons = ["About Us", "Gallery", "Visit"];
-const button_details = [
-  {
-    name: "Login",
-    details: ["Email", "Phone", "Google" , ],
-  },
-  {
-    name: "Sign up",
-    details: ["Email", "Phone", "Google" , "Github"],
-  },
+const menuLinks = [
+  { href: "/about-us", label: "About Us", icon: Info },
+  { href: "/gallery", label: "Gallery", icon: GalleryIcon },
+  { href: "/visit", label: "Visit", icon: MapPin },
 ];
 
-const NavbarIconDetails = ({ selectedName }) => {
-  const selectedButton = button_details.find(
-    (btn) => btn.name === selectedName
-  );
-
-  return (
-    <div
-      className="text-white flex flex-col gap-2 border px-2 py-2 rounded-xl shadow-lg bg-white/15 animate__animated animate__fadeInRight"
-    >
-      <label className="animate__animated animate__fadeIn font-bold">
-        {selectedName}
-      </label>
-      <div className="w-full border-white border-b-2 border-dashed"></div>
-      {selectedButton &&
-        selectedButton.details.map((detail, index) => (
-          <div
-            key={index}
-            className="bg-slate-700/80 py-px w-24 rounded-lg animate__animated animate__fadeIn"
-          >
-            {detail}
-          </div>
-        ))}
-    </div>
-  );
+const authMethods = {
+  login: [
+    { id: "email", label: "Email", icon: Mail },
+    { id: "phone", label: "Phone", icon: Phone },
+    { id: "google", label: "Google", icon: Chrome },
+  ],
+  signup: [
+    { id: "email", label: "Email", icon: Mail },
+    { id: "phone", label: "Phone", icon: Phone },
+    { id: "google", label: "Google", icon: Chrome },
+    { id: "github", label: "Github", icon: Github },
+  ],
 };
 
-const DropDown = ({ endOfPage, status, drawer, setDrawer }) => {
-    const handleClickOutside = () => {
-        if (drawer.show === false ) {
-            setDrawer(true, event.target.textContent);
-        }else {
-            setDrawer(false, event.target.textContent);
-            const data = event.target.textContent
-            setTimeout(() => {
-                if (drawer.selectedName !== data) {
-                    setDrawer(true, data);
-                }
-            } , 100)
-        }
-      
-    };
+const AuthSection = ({ type, onMethodClick }) => {
+  const methods = authMethods[type.toLowerCase()];
+  const Icon = type === "login" ? LogIn : UserPlus;
+
   return (
-    <div
-      dir="rtl"
-      className={`fixed w-full font-thin right-0 text-center ${
-        endOfPage ? "mb-1 bottom-14 " : "mt-1 top-14 "
-      } ${
-        status
-          ? "animate__animated animate__fadeIn"
-          : "animate__animated animate__fadeOut"
-      } h-fit z-40`}
-    >
-      <div className="flex  items-start justify-start gap-2 overflow-auto">
-        <div className="flex flex-col gap-2 w-4/12 border px-2 py-2 rounded-xl bg-white/15 ">
+    <div className="space-y-2">
+      <div className="flex items-center gap-2 px-2 py-1.5">
+        <Icon className="w-4 h-4 text-purple-400" />
+        <span className="text-sm font-medium text-white">{type}</span>
+      </div>
+      <div className="space-y-1">
+        {methods.map(({ id, label, icon: MethodIcon }) => (
           <button
-            onClick={() =>  handleClickOutside()}
-            className="text-white  font-bold py-1 bg-slate-700/80 shadow-lg  rounded-lg"
+            key={id}
+            onClick={() => onMethodClick(type, id)}
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors group"
           >
-            Login
+            <MethodIcon className="w-4 h-4 text-gray-400 group-hover:text-gray-300" />
+            <span className="text-sm text-gray-400 group-hover:text-gray-300">
+              {label}
+            </span>
           </button>
-          <button
-            onClick={() => handleClickOutside()}
-            className="text-white  font-bold py-1 bg-slate-700/80 shadow-lg  rounded-lg"
-          >
-            Sign up
-          </button>
-          {buttons.map((div) => (
-            <button
-              key={div}
-              className="text-white  py-1 hover:text-gray-800 bg-slate-600/70 shadow-lg rounded-lg  animate__animated animate__fadeInRight"
-            >
-              {div}
-            </button>
-          ))}
-        </div>
-        {drawer.show && (
-          <NavbarIconDetails selectedName={drawer.selectedName} />
-        )}
+        ))}
       </div>
     </div>
   );
 };
 
-function Menu({ endOfPage }) {
-  const [dropDown, setDropDown] = useState(false);
-  const [status, setStatus] = useState(false);
-  const dropDownRef = useRef(null);
-  const [drawer, setDrawerState] = useState({ show: false, selectedName: "" });
-
-  const setDrawer = (show, selectedName = "") => {
-    setDrawerState({ show, selectedName });
+const Menu = () => {
+  const handleAuthMethodClick = (type, method) => {
+    console.log(`${type} with ${method}`);
+    // Handle authentication method click
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropDownRef.current && !dropDownRef.current.contains(event.target)) {
-        setStatus(false);
-        setTimeout(() => {
-          setDropDown(false);
-          setDrawer(false);
-        }, 500);
-      }
-    };
-
-    if (dropDown) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [dropDown]);
-
   return (
-    <div className="flex items-center justify-center ">
-      <button
-        onClick={() => {
-          if (dropDown) {
-            setStatus(false);
-            setTimeout(() => {
-              setDropDown(false);
-            }, 500);
-          } else {
-            setStatus(true);
-            setDropDown(true);
-          }
-        }}
-      >
-        {status ? (
-          <Image
-            className="animate__animated animate__fadeIn"
-            src="/Close.svg"
-            alt="Menu"
-            width={24}
-            height={24}
-          />
-        ) : (
-          <Image
-            className="animate__animated animate__fadeIn"
-            src="/MenuIcon.svg"
-            alt="Menu"
-            width={24}
-            height={24}
-          />
-        )}
-      </button>
-      {dropDown && (
-        <div ref={dropDownRef}>
-          <DropDown
-            endOfPage={endOfPage}
-            status={status}
-            drawer={drawer}
-            setDrawer={setDrawer}
-          />
-        </div>
-      )}
+    <div className="bg-gray-900/95 backdrop-blur-lg rounded-lg border border-white/10 overflow-hidden divide-y divide-white/10">
+      {/* Auth Sections */}
+      <div className="p-2 space-y-2">
+        <AuthSection type="Login" onMethodClick={handleAuthMethodClick} />
+      </div>
+      <div className="p-2 space-y-2">
+        <AuthSection type="Signup" onMethodClick={handleAuthMethodClick} />
+      </div>
+
+      {/* Navigation Links */}
+      <div className="p-2 space-y-1">
+        {menuLinks.map(({ href, label, icon: Icon }) => (
+          <Link
+            key={href}
+            href={href}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors group"
+          >
+            <Icon className="w-4 h-4 text-gray-400 group-hover:text-gray-300" />
+            <span className="text-sm text-gray-400 group-hover:text-gray-300">
+              {label}
+            </span>
+          </Link>
+        ))}
+      </div>
     </div>
   );
-}
+};
 
 export default Menu;
