@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import SEO from "@/components/SEO";
 import {
   Film,
   Popcorn,
@@ -110,6 +111,30 @@ const MoviesPage = () => {
 
   return (
     <div className="min-h-screen bg-black">
+      <SEO
+        title="Explore Movies - MovieHub"
+        description="Browse our vast collection of movies by category, genre, and more. Find the latest blockbusters, classics, and hidden gems."
+        canonical="/movies"
+        keywords={[
+          "movies",
+          "films",
+          "blockbusters",
+          "cinema",
+          "watch movies",
+          "movie categories",
+          "movie genres",
+        ]}
+        openGraph={{
+          images: [
+            {
+              url: "/movies-og-image.jpg",
+              width: 1200,
+              height: 630,
+              alt: "MovieHub Movies Page",
+            },
+          ],
+        }}
+      />
       <Navbar />
 
       <div className="max-w-7xl mx-auto px-4 py-8">

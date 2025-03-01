@@ -10,6 +10,7 @@ import Section from "../components/Section";
 import FeaturedArtists from "../components/FeaturedArtists";
 import GenresSection from "../components/GenresSection";
 import Footer from "../components/Footer";
+import SEO from "../components/SEO";
 
 export default function Home() {
   const [sections, setSections] = useState({});
@@ -107,7 +108,31 @@ export default function Home() {
   // Success state with all sections
   return (
     <div className="min-h-screen bg-gray-900">
+      <SEO
+        title="MovieHub - Your Ultimate Movie and TV Show Discovery Platform"
+        description="Discover trending movies, TV shows, and explore content by genres. Find the latest releases and popular entertainment all in one place."
+        canonical="/"
+        keywords={[
+          "movies",
+          "tv shows",
+          "trending",
+          "entertainment",
+          "popular films",
+          "watch online",
+        ]}
+        openGraph={{
+          images: [
+            {
+              url: "/home-og-image.jpg",
+              width: 1200,
+              height: 630,
+              alt: "MovieHub Homepage",
+            },
+          ],
+        }}
+      />
       <Navbar />
+      
       <Hero />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
         {/* Main sections - first 3 */}

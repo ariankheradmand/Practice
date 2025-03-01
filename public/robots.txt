@@ -1,0 +1,10 @@
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Disallow specific private pages
+Disallow: /api/
+Disallow: /_next/
+
+# Sitemap location
+Sitemap: https://moviehub.example.com/sitemap.xml 

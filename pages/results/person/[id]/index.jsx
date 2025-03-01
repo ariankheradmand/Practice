@@ -153,10 +153,10 @@ const PersonDetail = () => {
   const tvCredits = sortCredits(person.credits, "tv");
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black pt-20">
       <Navbar />
 
-      <div className="relative animate-fadeIn">
+      <div className="relative animate-fadeIn ">
         {/* Background Gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-gray-900 to-black" />
 

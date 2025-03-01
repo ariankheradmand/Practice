@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import Random from "../../components/Random";
 import { useInView } from "react-intersection-observer";
-import Head from "next/head";
+import SEO from "../../components/SEO";
 import Popular from "./Popular";
 import Hero from "../../components/Hero";
 
@@ -39,15 +39,13 @@ function HomePage() {
       }
     };
 
-
     window.addEventListener("scroll", handleScroll);
-    if (isScrolled >= (isScrolled + 511)) {
-       setIsSmooth(true);
+    if (isScrolled >= isScrolled + 511) {
+      setIsSmooth(true);
     }
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-    
   }, [isSmooth]);
 
   const RandomWrapper = ({ value, initialPlacement, initialRightLeft }) => {
@@ -68,10 +66,30 @@ function HomePage() {
 
   return (
     <div className="flex flex-col relative items-center justify-center bg-gradient-to-b from-black/90 to-white/90">
-      <Head>
-        <title>Main Page</title>
-      </Head>
-      <Navbar  />
+      <SEO
+        title="Main Page - MovieHub"
+        description="Explore our main collection of trending movies and TV shows. Discover the best entertainment content all in one place."
+        canonical="/main"
+        keywords={[
+          "main page",
+          "movies",
+          "tv shows",
+          "trending",
+          "entertainment",
+          "popular content",
+        ]}
+        openGraph={{
+          images: [
+            {
+              url: "/main-og-image.jpg",
+              width: 1200,
+              height: 630,
+              alt: "MovieHub Main Page",
+            },
+          ],
+        }}
+      />
+      <Navbar />
       <Hero />
       <Popular />
       <MouseContent />
@@ -90,7 +108,6 @@ function HomePage() {
         initialPlacement={-91}
         initialRightLeft="-"
       />
-      
     </div>
   );
 }

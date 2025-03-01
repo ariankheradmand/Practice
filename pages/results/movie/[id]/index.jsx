@@ -308,7 +308,7 @@ const MovieDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black pt-20">
       <Navbar />
 
       <div className="relative animate-fadeIn">
