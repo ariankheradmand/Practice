@@ -318,8 +318,8 @@ function Navbar() {
 
       {/* Mobile Search Bar */}
       {openSearchBar && (
-        <div className="sm:hidden fixed inset-x-0 top-16 px-4">
-          <div className="bg-gray-900/95 backdrop-blur-lg rounded-lg p-4 shadow-lg border border-white/10">
+        <div className="sm:hidden fixed inset-x-0 top-16 px-4 z-50">
+          <div className="bg-gray-900/95 backdrop-blur-lg rounded-lg shadow-xl border border-white/10 p-4">
             <Searchabar
               isScrolled={isScrolled}
               endOfPage={endOfPage}

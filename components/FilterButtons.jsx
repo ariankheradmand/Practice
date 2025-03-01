@@ -16,17 +16,21 @@ const FilterButtons = ({
 
   return (
     <div
-      className={`${
-        openSearchBar ? "visible" : "invisible"
-      } flex items-center justify-center gap-3 w-full max-w-md mx-auto mb-6`}
+      className={`
+        flex items-center justify-between gap-1 w-full 
+        mx-auto py-1.5 px-1.5
+        overflow-x-auto
+      `}
     >
       {filters.map(({ id, label, icon: Icon }) => (
         <button
           key={id}
           onClick={() => setFilterSearches(id)}
           className={`
-            relative group flex items-center gap-2 px-4 py-2.5 rounded-xl
-            transition-all duration-300 ease-out flex-1
+            relative group flex items-center justify-center gap-1 sm:gap-2 
+            px-3 sm:px-4 py-2 rounded-xl
+            transition-all duration-300 ease-out 
+            flex-1 min-w-0 whitespace-nowrap
             ${
               filterSearches === id
                 ? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 shadow-lg"
@@ -48,10 +52,10 @@ const FilterButtons = ({
           />
 
           {/* Content */}
-          <div className="relative flex items-center gap-2">
+          <div className="relative flex items-center gap-1 sm:gap-2">
             <Icon
               className={`
-                w-5 h-5 transition-colors duration-300
+                w-4 h-4 sm:w-5 sm:h-5 transition-colors duration-300 flex-shrink-0
                 ${
                   filterSearches === id
                     ? "text-purple-400"
@@ -61,7 +65,7 @@ const FilterButtons = ({
             />
             <span
               className={`
-                text-sm font-medium transition-colors duration-300
+                text-xs sm:text-sm font-medium transition-colors duration-300 truncate
                 ${
                   filterSearches === id
                     ? "text-white"
