@@ -106,14 +106,14 @@ function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center w-full">
+    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center w-full py-2">
       <div
         className={`
           w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8
           transition-all duration-500 ease-out
           ${
             endOfPage
-              ? "translate-y-[calc(100vh-4rem)] rounded-t-2xl rounded-b-none bg-gray-900/95"
+              ? " bg-gray-900/95"
               : isScrolled
               ? "translate-y-0 bg-gray-900/80 backdrop-blur-lg shadow-lg"
               : "translate-y-4 bg-transparent"
@@ -318,8 +318,8 @@ function Navbar() {
 
       {/* Mobile Search Bar */}
       {openSearchBar && (
-        <div className="sm:hidden fixed inset-x-0 top-16 px-4 z-50">
-          <div className="bg-gray-900/95 backdrop-blur-lg rounded-lg shadow-xl border border-white/10 p-4">
+        <div className="sm:hidden fixed inset-x-0 top-20 px-4 z-50">
+          <div className="bg-gray-900/95 backdrop-blur-lg rounded-xl shadow-xl border border-white/10 p-4 overflow-visible">
             <Searchabar
               isScrolled={isScrolled}
               endOfPage={endOfPage}

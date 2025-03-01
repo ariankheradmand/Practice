@@ -92,10 +92,10 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
 
       {/* Search Results */}
       {openSearchBar && (
-        <div className="absolute left-0 right-0 mt-2 z-50">
+        <div className="absolute left-0 right-0 mt-3 z-50">
           <div className="mx-auto bg-gray-900/95 backdrop-blur-lg rounded-xl shadow-xl border border-white/10 overflow-hidden">
-            <div className="p-2">
-              <div className="mb-2 bg-gradient-to-r from-gray-800/80 to-gray-900/80 rounded-lg shadow-inner">
+            <div className="p-3">
+              <div className="mb-3 bg-gradient-to-r from-gray-800/80 to-gray-900/80 rounded-lg shadow-inner">
                 <FilterButtons
                   collection={collection}
                   filterSearches={filterSearches}
@@ -107,7 +107,7 @@ const Searchabar = ({ openSearchBar, endOfPage }) => {
 
               {/* Always show the SearchResults component when search input is long enough */}
               {debouncedSearchInput.length > 2 && (
-                <div className="mt-2">
+                <div className="mt-3 max-h-[calc(100vh-200px)] overflow-hidden">
                   <SearchResults
                     results={results}
                     selectedMovie={selectedMovie}

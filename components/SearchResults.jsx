@@ -354,8 +354,8 @@ const SearchResults = ({
           </div>
         </div>
 
-        {/* Preview section */}
-        <div className="w-full sm:w-1/2 h-48 sm:h-auto flex items-center justify-center bg-gradient-to-br from-gray-900/40 to-black/40">
+        {/* Preview section - Fixed for mobile */}
+        <div className="w-full sm:w-1/2 h-48 sm:h-96 flex items-center justify-center bg-gradient-to-br from-gray-900/40 to-black/40">
           <ImageSection />
         </div>
       </div>

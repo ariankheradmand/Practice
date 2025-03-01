@@ -228,7 +228,7 @@ export default function Hero() {
   const currentMovie = featuredMovies[currentIndex];
 
   return (
-    <div className="relative w-full h-[70vh] overflow-hidden">
+    <div className="relative w-full h-[70vh] overflow-hidden mt-2">
       {/* Background Image with Gradient Overlay */}
       <div className="absolute inset-0">
         <img
